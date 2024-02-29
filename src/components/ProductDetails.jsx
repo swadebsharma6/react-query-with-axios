@@ -20,11 +20,21 @@ const ProductDetails = ({id}) => {
         return  <div>An error occurred :{error.message}</div>
     }
 
-    console.log(product)
+    // console.log(product)
 
     return (
-        <div className="my-5">
+        <div className="w-1/2 ">
             <h2 className="text-3xl my-2">Product Details</h2>
+
+            <div className='border bg-gray-200 p-1 text-md rounded flex flex-col'>
+                <img 
+                className='object-cover h-24 w-24 border rounded-full m-auto'
+                src={product.thumbnail} alt="Image" />
+                <p className='my-3'>{product.title}</p>
+                <p className='my-3'>{product.description}</p>
+                <p className='my-3'>Price: $ {product.price}</p>
+                <p className='my-3'>Ratting: {product.rating}</p>
+            </div>
         </div>
     );
 };

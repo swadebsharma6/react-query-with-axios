@@ -6,7 +6,7 @@ const App = () => {
   return (
     <div className="flex m-2">
     <ProductsList></ProductsList>
-    <ProductDetails id={1}></ProductDetails>
+    <ProductDetails id={5}></ProductDetails>
     </div>
   );
 };
