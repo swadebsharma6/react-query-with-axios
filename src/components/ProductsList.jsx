@@ -1,19 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { useState } from 'react';
 const retrieveProducts = async({queryKey})=>{
     
-    const response =  await axios.get(`http://localhost:3000/${queryKey[0]}`);
+    const response =  await axios.get(`http://localhost:3000/products?_page=${queryKey[1].page}&_per_page=6`);
     return  response.data
 }
 
 const ProductsList = () => {
-
+    const [page, setPage] = useState(1);
     const {data:products, error, isLoading } = useQuery({
-        queryKey: ['products'],
+        queryKey: ['products', {page}],
         queryFn: retrieveProducts,
-        retry: false,
-        staleTime: 5000
     });
+  
 
     if(isLoading){
         return  <div>Fetching Products ..............</div>
@@ -26,8 +26,8 @@ const ProductsList = () => {
         <div className='flex flex-col justify-center items-center w-3/5'>
             <h2 className='text-3xl my-5'>Product List</h2>
             <ul className='flex flex-wrap justify-center items-center'>
-                {products &&
-                    products.map(product => (
+                {products.data &&
+                    products.data.map(product => (
                         <li key={product.id}
                         className='flex flex-col items-center mb-2 border rounded-lg'
                         >
@@ -38,6 +38,28 @@ const ProductsList = () => {
                     ))
                 }
             </ul>
+            <div className='flex'>
+            {
+                products.prev && (
+                    <button
+                    className='p-1 mx-1 bg-gray-400 border cursor-pointer rounded-sm'
+                    onClick={() => setPage(products.next)}
+                    >
+                    Prev
+                    </button>
+                )
+              }
+              {
+                products.next && (
+                    <button
+                    className='p-1 mx-1 bg-gray-400 border cursor-pointer rounded-sm'
+                    onClick={() => setPage(products.next)}
+                    >
+                    Next
+                    </button>
+                )
+              }
+            </div>
         </div>
     );
 };
